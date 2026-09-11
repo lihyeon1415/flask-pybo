@@ -7,17 +7,20 @@ import config
 db = SQLAlchemy()
 migrate = Migrate()
 
+# 애플리케이션 팩토리
 def create_app():
     app = Flask(__name__)
     app.config.from_object(config)
 
-    # ORM 초기설정
+    # ORM 초기 설정
     db.init_app(app)
     migrate.init_app(app, db)
     from . import models
 
-    # 블루프린트
-    from .views import main_views
+    # 블루프린트 등록
+    from .views import main_views, question_views, answer_views
     app.register_blueprint(main_views.bp)
+    app.register_blueprint(question_views.bp)
+    app.register_blueprint(answer_views.bp)
 
     return app
